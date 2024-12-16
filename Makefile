@@ -41,4 +41,4 @@ ci-lint:
 	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" lint
 
 ci-unittest:
-	echo "Dummy unittest"
+	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" pytest
