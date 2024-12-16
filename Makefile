@@ -8,6 +8,15 @@ DOCKER_COMPOSE = $(DOCKER_COMPOSE_DEV)
 build:
 	$(DOCKER_COMPOSE) build spacy-keyword-extraction-api
 
+build-dev:
+	$(DOCKER_COMPOSE) build spacy-keyword-extraction-api-dev
+
+flake8:
+	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
+		python -m flake8 spacy_keyword_extraction_api tests
+
+lint: flake8
+
 
 start:
 	$(DOCKER_COMPOSE) up -d spacy-keyword-extraction-api
