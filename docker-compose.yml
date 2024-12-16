@@ -1,0 +1,6 @@
+services:
+    spacy-keyword-extraction-api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: ${IMAGE_REPO}:${IMAGE_TAG}
