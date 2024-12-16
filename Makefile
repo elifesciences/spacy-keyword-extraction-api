@@ -8,6 +8,29 @@ DOCKER_COMPOSE = $(DOCKER_COMPOSE_DEV)
 build:
 	$(DOCKER_COMPOSE) build spacy-keyword-extraction-api
 
+build-dev:
+	$(DOCKER_COMPOSE) build spacy-keyword-extraction-api-dev
+
+flake8:
+	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
+		python -m flake8 spacy_keyword_extraction_api tests
+
+pylint:
+	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
+		python -m pylint spacy_keyword_extraction_api tests
+
+mypy:
+	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
+		python -m mypy spacy_keyword_extraction_api tests
+
+lint: flake8 pylint mypy
+
+pytest:
+	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
+		python -m pytest spacy_keyword_extraction_api tests
+
+test: lint pytest
+
 
 start:
 	$(DOCKER_COMPOSE) up -d spacy-keyword-extraction-api
@@ -22,8 +45,11 @@ logs:
 ci-build:
 	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build
 
+ci-build-dev:
+	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build-dev
+
 ci-lint:
-	echo "Dummy lint"
+	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" lint
 
 ci-unittest:
-	echo "Dummy unittest"
+	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" pytest

@@ -4,3 +4,13 @@ services:
             context: .
             dockerfile: Dockerfile
         image: ${IMAGE_REPO}:${IMAGE_TAG}
+
+    spacy-keyword-extraction-api-dev:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                install_dev: y
+        image:  ${IMAGE_REPO}-dev:${IMAGE_TAG}
+        command: /bin/sh -c exit 0
+        entrypoint: []
