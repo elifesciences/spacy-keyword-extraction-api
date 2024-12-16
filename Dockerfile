@@ -18,8 +18,9 @@ RUN if [ "${install_dev}" = "y" ]; then \
 
 COPY spacy_keyword_extraction_api ./spacy_keyword_extraction_api
 COPY static ./static
-COPY tests ./tests
+COPY config ./config
 
+COPY tests ./tests
 COPY .flake8 .pylintrc ./
 
-CMD ["python3", "-m", "uvicorn", "spacy_keyword_extraction_api.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python3", "-m", "uvicorn", "spacy_keyword_extraction_api.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--log-config=config/logging.yaml"]

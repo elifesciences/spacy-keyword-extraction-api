@@ -50,7 +50,8 @@ dev-start:
 		--reload \
 		--factory \
 		--host 127.0.0.1 \
-		--port 8000
+		--port 8000 \
+		--log-config=config/logging.yaml
 
 
 build:
