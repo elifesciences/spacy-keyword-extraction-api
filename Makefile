@@ -17,6 +17,12 @@ flake8:
 
 lint: flake8
 
+pytest:
+	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
+		python -m pytest spacy_keyword_extraction_api tests
+
+test: lint pytest
+
 
 start:
 	$(DOCKER_COMPOSE) up -d spacy-keyword-extraction-api
