@@ -9,6 +9,16 @@ build:
 	$(DOCKER_COMPOSE) build spacy-keyword-extraction-api
 
 
+start:
+	$(DOCKER_COMPOSE) up -d spacy-keyword-extraction-api
+
+stop:
+	$(DOCKER_COMPOSE) down
+
+logs:
+	$(DOCKER_COMPOSE) logs -f
+
+
 ci-build:
 	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build
 

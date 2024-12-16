@@ -1,0 +1,4 @@
+services:
+    spacy-keyword-extraction-api:
+        ports:
+            - "8000:8000"
