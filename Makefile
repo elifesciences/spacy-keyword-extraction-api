@@ -38,7 +38,7 @@ ci-build:
 	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build
 
 ci-lint:
-	echo "Dummy lint"
+	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" lint
 
 ci-unittest:
 	echo "Dummy unittest"
