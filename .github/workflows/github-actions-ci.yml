@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Build Image
-        run: make ci-build
+      - name: Build Dev Image
+        run: make ci-build-dev
       - name: Linting
         run: make ci-lint
       - name: Unit Test

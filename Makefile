@@ -45,6 +45,9 @@ logs:
 ci-build:
 	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build
 
+ci-build-dev:
+	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" build-dev
+
 ci-lint:
 	$(MAKE) DOCKER_COMPOSE="$(DOCKER_COMPOSE_CI)" lint
 
