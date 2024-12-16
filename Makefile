@@ -19,7 +19,11 @@ pylint:
 	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
 		python -m pylint spacy_keyword_extraction_api tests
 
-lint: flake8 pylint
+mypy:
+	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
+		python -m mypy spacy_keyword_extraction_api tests
+
+lint: flake8 pylint mypy
 
 pytest:
 	$(DOCKER_COMPOSE) run --rm spacy-keyword-extraction-api-dev \
