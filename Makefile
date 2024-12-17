@@ -43,6 +43,9 @@ dev-unittest:
 
 dev-test: dev-lint dev-unittest
 
+dev-watch:
+	$(PYTHON) -m pytest_watcher tests/unit_test
+
 
 dev-start:
 	$(PYTHON) -m uvicorn \
