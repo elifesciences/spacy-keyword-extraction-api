@@ -1,5 +1,4 @@
 FROM python:3.8-slim
-ARG install_dev=n
 
 RUN apt-get update \
     && apt-get install --assume-yes --quiet --quiet \
@@ -16,7 +15,6 @@ RUN pip install --disable-pip-version-check -r requirements.spacy.txt
 
 # download spaCy language models
 RUN python -m spacy download en_core_web_lg
-RUN if [ "${install_dev}" = "y" ]; then python -m spacy download en_core_web_sm; fi
 
 COPY requirements.txt ./
 RUN pip install --disable-pip-version-check \
@@ -24,6 +22,7 @@ RUN pip install --disable-pip-version-check \
     -r requirements.txt
 
 COPY requirements.dev.txt ./
+ARG install_dev=n
 RUN if [ "${install_dev}" = "y" ]; then \
     pip install --disable-pip-version-check --user \
         -r requirements.spacy.txt \
