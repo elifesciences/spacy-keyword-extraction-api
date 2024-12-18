@@ -4,12 +4,3 @@ clear = false
 delay = 0.2
 runner = "venv/bin/python"
 runner_args = ["-m", "pytest"]
-
-
-[tool.pytest.ini_options]
-testpaths = [
-    "tests"
-]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')"
-]
