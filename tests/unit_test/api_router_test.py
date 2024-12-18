@@ -13,7 +13,7 @@ def create_test_client():
 
 
 class TestExtractKeyword:
-    def test_should_return_keywords(self):
+    def test_should_return_keywords_in_lower_case(self):
         client = create_test_client()
-        response = client.get('/v1/extract-keywords', params={'text': 'some text'})
+        response = client.get('/v1/extract-keywords', params={'text': 'Some Text'})
         assert response.json() == ['some', 'text']
