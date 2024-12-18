@@ -2,11 +2,12 @@ from fastapi.testclient import TestClient
 from fastapi import FastAPI
 
 from spacy_keyword_extraction_api.api_router import create_api_router
+from spacy_keyword_extraction_api.extract_keywords import SimpleKeywordExtractor
 
 
 def create_test_client():
     app = FastAPI()
-    app.include_router(create_api_router())
+    app.include_router(create_api_router(keyword_extractor=SimpleKeywordExtractor()))
     client = TestClient(app)
     return client
 
