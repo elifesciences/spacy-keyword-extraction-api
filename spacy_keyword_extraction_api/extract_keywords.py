@@ -3,6 +3,10 @@ from abc import ABC, abstractmethod
 import re
 from typing import Iterable, List
 
+from spacy.language import Language
+
+from spacy_keyword_extraction_api.spacy_keyword import SpacyKeywordDocumentParser
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -24,4 +28,16 @@ class SimpleKeywordExtractor(KeywordExtractor):
         return (
             simple_regex_keyword_extraction(text)
             for text in text_list
+        )
+
+
+class SpacyKeywordExtractor(KeywordExtractor):
+    def __init__(self, language: Language):
+        self.parser = SpacyKeywordDocumentParser(language)
+
+    def iter_extract_keywords(
+            self, text_list: Iterable[str]) -> Iterable[List[str]]:
+        return (
+            document.get_keyword_str_list()
+            for document in self.parser.iter_parse_text_list(text_list)
         )
