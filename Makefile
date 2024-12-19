@@ -8,6 +8,8 @@ VENV = venv
 PIP = $(VENV)/bin/pip
 PYTHON = $(VENV)/bin/python
 
+PYTEST_WATCH_MODULES = tests/unit_test
+
 
 venv-clean:
 	@if [ -d "$(VENV)" ]; then \
@@ -50,7 +52,10 @@ dev-unittest:
 dev-test: dev-lint dev-unittest
 
 dev-watch:
-	$(PYTHON) -m pytest_watcher tests/unit_test
+	$(PYTHON) -m pytest_watcher \
+		--runner=$(VENV)/bin/python \
+		. \
+		-m pytest $(PYTEST_WATCH_MODULES)
 
 
 dev-start:
