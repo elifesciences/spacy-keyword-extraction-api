@@ -114,7 +114,7 @@ def create_api_router(
     )
     def batch_extract_keywords(
         batch_extract_keywords_request: BatchExtractKeywordsRequestTypedDict = Body(
-            example=EXAMPLE_BATCH_EXTRACT_KEYWORDS_REQUEST
+            examples=[EXAMPLE_BATCH_EXTRACT_KEYWORDS_REQUEST]
         )
     ) -> BatchKeywordsResponseTypedDict:
         extract_keywords_request_list = batch_extract_keywords_request['data']
