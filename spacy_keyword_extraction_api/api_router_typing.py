@@ -19,6 +19,7 @@ class BatchExtractKeywordsRequestTypedDict(TypedDict):
 
 class KeywordsResponseKeywordTypedDict(TypedDict):
     keyword: str
+    count: int
 
 
 class KeywordsResponseAttributesTypedDict(TypedDict):

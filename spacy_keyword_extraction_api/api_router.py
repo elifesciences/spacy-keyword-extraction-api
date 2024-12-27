@@ -37,9 +37,11 @@ EXAMPLE_BATCH_KEYWORDS_RESPONSE: BatchKeywordsResponseTypedDict = {
         'type': 'extract-keyword-result',
         'attributes': {
             'keywords': [{
-                'keyword': 'biochemistry'
+                'keyword': 'biochemistry',
+                'count': 1
             }, {
-                'keyword': 'neuroscience'
+                'keyword': 'neuroscience',
+                'count': 1
             }]
         },
         'id': 'doc-1',
@@ -74,9 +76,10 @@ def get_keyword_response_dict_list(
 ) -> Sequence[KeywordsResponseKeywordTypedDict]:
     return [
         {
-            'keyword': keyword
+            'keyword': keyword,
+            'count': count
         }
-        for keyword in Counter(keywords)
+        for keyword, count in Counter(keywords).items()
     ]
 
 

@@ -37,9 +37,11 @@ class TestGetKeywordResponseDictList:
         assert (
             get_keyword_response_dict_list(['keyword_1', 'keyword_2'])
             == [{
-                'keyword': 'keyword_1'
+                'keyword': 'keyword_1',
+                'count': 1
             }, {
-                'keyword': 'keyword_2'
+                'keyword': 'keyword_2',
+                'count': 1
             }]
         )
 
@@ -47,9 +49,11 @@ class TestGetKeywordResponseDictList:
         assert (
             get_keyword_response_dict_list(['keyword_1', 'keyword_2', 'keyword_1'])
             == [{
-                'keyword': 'keyword_1'
+                'keyword': 'keyword_1',
+                'count': 2
             }, {
-                'keyword': 'keyword_2'
+                'keyword': 'keyword_2',
+                'count': 1
             }]
         )
 
