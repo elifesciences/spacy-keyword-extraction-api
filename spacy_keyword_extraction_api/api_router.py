@@ -7,6 +7,7 @@ from fastapi import APIRouter, Body
 from spacy_keyword_extraction_api.api_router_typing import (
     BatchExtractKeywordsRequestTypedDict,
     BatchKeywordsResponseTypedDict,
+    KeywordsRequestDataTypedDict,
     KeywordsResponseDataTypedDict
 )
 from spacy_keyword_extraction_api.extract_keywords import KeywordExtractor
@@ -17,6 +18,26 @@ LOGGER = logging.getLogger(__name__)
 
 class KeywordsResponseTypedDict(TypedDict):
     keywords: Sequence[str]
+
+
+def get_keyword_response_data(
+    keywords: Sequence[str],
+    extract_keyword_request: KeywordsRequestDataTypedDict
+) -> KeywordsResponseDataTypedDict:
+    result: KeywordsResponseDataTypedDict = {
+        'type': 'extract-keyword-result',
+        'attributes': {
+            'keywords': [
+                {
+                    'keyword': keyword
+                }
+                for keyword in keywords
+            ]
+        }
+    }
+    if extract_keyword_request.get('id'):
+        result['id'] = extract_keyword_request['id']
+    return result
 
 
 def create_api_router(keyword_extractor: KeywordExtractor) -> APIRouter:
@@ -32,23 +53,21 @@ def create_api_router(keyword_extractor: KeywordExtractor) -> APIRouter:
     def batch_extract_keywords(
         batch_extract_keywords_request: BatchExtractKeywordsRequestTypedDict = Body()
     ) -> BatchKeywordsResponseTypedDict:
+        extract_keywords_request_list = batch_extract_keywords_request['data']
         text_list = [
             extract_keywords_request['attributes']['content']
-            for extract_keywords_request in batch_extract_keywords_request['data']
+            for extract_keywords_request in extract_keywords_request_list
         ]
+        keywords_list = list(keyword_extractor.iter_extract_keywords(text_list=text_list))
+        assert len(text_list) == len(extract_keywords_request_list)
         extraction_result_data_list: Sequence[KeywordsResponseDataTypedDict] = [
-            {
-                'type': 'extract-keyword-result',
-                'attributes': {
-                    'keywords': [
-                        {
-                            'keyword': keyword
-                        }
-                        for keyword in keywords
-                    ]
-                }
-            }
-            for keywords in keyword_extractor.iter_extract_keywords(text_list=text_list)
+            get_keyword_response_data(
+                keywords=keywords,
+                extract_keyword_request=extract_keywords_request
+            )
+            for keywords, extract_keywords_request in zip(
+                keywords_list, extract_keywords_request_list
+            )
         ]
         return {
             'data': extraction_result_data_list

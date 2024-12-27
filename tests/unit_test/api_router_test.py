@@ -79,6 +79,7 @@ class TestExtractKeyword:
         request_json: BatchExtractKeywordsRequestTypedDict = {
             'data': [{
                 'type': 'extract-keyword-request',
+                'id': 'doc-1',
                 'attributes': {
                     'content': TEXT_1
                 }
@@ -87,6 +88,7 @@ class TestExtractKeyword:
         expected_response_json: BatchKeywordsResponseTypedDict = {
             'data': [{
                 'type': 'extract-keyword-result',
+                'id': 'doc-1',
                 'attributes': {
                     'keywords': [
                         {
