@@ -34,6 +34,7 @@ class KeywordsResponseDataTypedDict(TypedDict):
 
 class KeywordsResponseMetaTypedDict(TypedDict):
     spacy_version: NotRequired[str]
+    spacy_language_model_name: NotRequired[str]
 
 
 class BatchKeywordsResponseTypedDict(TypedDict):
