@@ -8,7 +8,8 @@ from spacy_keyword_extraction_api.api_router_typing import (
     BatchExtractKeywordsRequestTypedDict,
     BatchKeywordsResponseTypedDict,
     KeywordsRequestDataTypedDict,
-    KeywordsResponseDataTypedDict
+    KeywordsResponseDataTypedDict,
+    KeywordsResponseKeywordTypedDict
 )
 from spacy_keyword_extraction_api.extract_keywords import KeywordExtractor
 
@@ -20,6 +21,17 @@ class KeywordsResponseTypedDict(TypedDict):
     keywords: Sequence[str]
 
 
+def get_keyword_response_dict_list(
+    keywords: Sequence[str]
+) -> Sequence[KeywordsResponseKeywordTypedDict]:
+    return [
+        {
+            'keyword': keyword
+        }
+        for keyword in keywords
+    ]
+
+
 def get_keyword_response_data(
     keywords: Sequence[str],
     extract_keyword_request: KeywordsRequestDataTypedDict
@@ -27,12 +39,7 @@ def get_keyword_response_data(
     result: KeywordsResponseDataTypedDict = {
         'type': 'extract-keyword-result',
         'attributes': {
-            'keywords': [
-                {
-                    'keyword': keyword
-                }
-                for keyword in keywords
-            ]
+            'keywords': get_keyword_response_dict_list(keywords)
         }
     }
     if extract_keyword_request.get('id'):
