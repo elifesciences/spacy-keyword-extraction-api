@@ -18,6 +18,52 @@ from spacy_keyword_extraction_api.extract_keywords import KeywordExtractor
 LOGGER = logging.getLogger(__name__)
 
 
+EXAMPLE_BATCH_EXTRACT_KEYWORDS_REQUEST: BatchExtractKeywordsRequestTypedDict = {
+    'data': [{
+        'type': 'extract-keyword-request',
+        'id': 'doc-1',
+        'attributes': {
+            'content': 'I am interested in biochemistry and neuroscience.'
+        },
+        'meta': {
+            'extra_id': 'doc-1/v1'
+        }
+    }]
+}
+
+EXAMPLE_BATCH_KEYWORDS_RESPONSE: BatchKeywordsResponseTypedDict = {
+    'data': [{
+        'type': 'extract-keyword-result',
+        'attributes': {
+            'keywords': [{
+                'keyword': 'biochemistry'
+            }, {
+                'keyword': 'neuroscience'
+            }]
+        },
+        'id': 'doc-1',
+        'meta': {
+            'extra_id': 'doc-1/v1'
+        }
+    }],
+    'meta': {
+        'spacy_version': '2.2.4',
+        'spacy_language_model_name': 'en_core_web_lg'
+    }
+}
+
+EXAMPLE_BATCH_KEYWORDS_RESPONSES_BY_STATUS_CODE_DICT: dict = {
+    200: {
+        'description': 'Successful keyword extraction',
+        'content': {
+            'application/json': {
+                'example': EXAMPLE_BATCH_KEYWORDS_RESPONSE
+            }
+        }
+    }
+}
+
+
 class KeywordsResponseTypedDict(TypedDict):
     keywords: Sequence[str]
 
@@ -56,15 +102,20 @@ def create_api_router(
 ) -> APIRouter:
     router = APIRouter()
 
-    @router.get("/v1/extract-keywords")
+    @router.get('/v1/extract-keywords')
     def extract_keywords(text: str) -> KeywordsResponseTypedDict:
         return {
             'keywords': keyword_extractor.get_extracted_keywords_for_text(text)
         }
 
-    @router.post("/v1/batch-extract-keywords")
+    @router.post(
+        '/v1/batch-extract-keywords',
+        responses=EXAMPLE_BATCH_KEYWORDS_RESPONSES_BY_STATUS_CODE_DICT
+    )
     def batch_extract_keywords(
-        batch_extract_keywords_request: BatchExtractKeywordsRequestTypedDict = Body()
+        batch_extract_keywords_request: BatchExtractKeywordsRequestTypedDict = Body(
+            example=EXAMPLE_BATCH_EXTRACT_KEYWORDS_REQUEST
+        )
     ) -> BatchKeywordsResponseTypedDict:
         extract_keywords_request_list = batch_extract_keywords_request['data']
         text_list = [
