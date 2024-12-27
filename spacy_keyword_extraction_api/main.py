@@ -21,7 +21,10 @@ def create_app():
             language=spacy.load(
                 DEFAULT_SPACY_LANGUAGE_MODEL_NAME
             )
-        )
+        ),
+        meta={
+            'spacy_version': spacy.__version__
+        }
     ))
 
     app.mount('/', StaticFiles(directory='static', html=True), name='static')

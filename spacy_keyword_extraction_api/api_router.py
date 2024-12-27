@@ -1,5 +1,5 @@
 import logging
-from typing import Sequence
+from typing import Optional, Sequence
 from typing_extensions import TypedDict
 
 from fastapi import APIRouter, Body
@@ -9,7 +9,8 @@ from spacy_keyword_extraction_api.api_router_typing import (
     BatchKeywordsResponseTypedDict,
     KeywordsRequestDataTypedDict,
     KeywordsResponseDataTypedDict,
-    KeywordsResponseKeywordTypedDict
+    KeywordsResponseKeywordTypedDict,
+    KeywordsResponseMetaTypedDict
 )
 from spacy_keyword_extraction_api.extract_keywords import KeywordExtractor
 
@@ -49,7 +50,10 @@ def get_keyword_response_data(
     return result
 
 
-def create_api_router(keyword_extractor: KeywordExtractor) -> APIRouter:
+def create_api_router(
+    keyword_extractor: KeywordExtractor,
+    meta: Optional[KeywordsResponseMetaTypedDict] = None
+) -> APIRouter:
     router = APIRouter()
 
     @router.get("/v1/extract-keywords")
@@ -78,8 +82,11 @@ def create_api_router(keyword_extractor: KeywordExtractor) -> APIRouter:
                 keywords_list, extract_keywords_request_list
             )
         ]
-        return {
+        response_json: BatchKeywordsResponseTypedDict = {
             'data': extraction_result_data_list
         }
+        if meta:
+            response_json['meta'] = meta
+        return response_json
 
     return router

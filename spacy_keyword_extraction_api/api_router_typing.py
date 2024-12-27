@@ -32,5 +32,10 @@ class KeywordsResponseDataTypedDict(TypedDict):
     meta: NotRequired[Mapping[str, Any]]
 
 
+class KeywordsResponseMetaTypedDict(TypedDict):
+    spacy_version: NotRequired[str]
+
+
 class BatchKeywordsResponseTypedDict(TypedDict):
     data: Sequence[KeywordsResponseDataTypedDict]
+    meta: NotRequired[KeywordsResponseMetaTypedDict]
