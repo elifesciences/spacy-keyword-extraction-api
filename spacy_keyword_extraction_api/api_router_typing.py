@@ -1,4 +1,4 @@
-from typing import Literal, Sequence
+from typing import Any, Literal, Mapping, Sequence
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -10,6 +10,7 @@ class KeywordsRequestDataTypedDict(TypedDict):
     type: Literal['extract-keyword-request']
     attributes: KeywordsRequestAttributesTypedDict
     id: NotRequired[str]
+    meta: NotRequired[Mapping[str, Any]]
 
 
 class BatchExtractKeywordsRequestTypedDict(TypedDict):
@@ -28,6 +29,7 @@ class KeywordsResponseDataTypedDict(TypedDict):
     type: Literal['extract-keyword-result']
     attributes: KeywordsResponseAttributesTypedDict
     id: NotRequired[str]
+    meta: NotRequired[Mapping[str, Any]]
 
 
 class BatchKeywordsResponseTypedDict(TypedDict):

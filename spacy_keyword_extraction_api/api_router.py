@@ -44,6 +44,8 @@ def get_keyword_response_data(
     }
     if extract_keyword_request.get('id'):
         result['id'] = extract_keyword_request['id']
+    if extract_keyword_request.get('meta'):
+        result['meta'] = extract_keyword_request['meta']
     return result
 
 

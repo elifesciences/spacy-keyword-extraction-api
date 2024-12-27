@@ -114,3 +114,40 @@ class TestExtractKeyword:
         actual_response_json = response.json()
         LOGGER.debug('actual_response_json: %r', actual_response_json)
         assert actual_response_json == expected_response_json
+
+    def test_should_return_meta_from_request(
+        self,
+        keyword_extractor: KeywordExtractor
+    ):
+        request_json: BatchExtractKeywordsRequestTypedDict = {
+            'data': [{
+                'type': 'extract-keyword-request',
+                'id': 'doc-1',
+                'attributes': {
+                    'content': TEXT_1
+                },
+                'meta': {
+                    'version_id': 'v1'
+                }
+            }]
+        }
+        expected_response_json: BatchKeywordsResponseTypedDict = {
+            'data': [{
+                'type': 'extract-keyword-result',
+                'id': 'doc-1',
+                'attributes': {
+                    'keywords': get_keyword_response_dict_list(
+                        keyword_extractor.get_extracted_keywords_for_text(TEXT_1)
+                    )
+                },
+                'meta': {
+                    'version_id': 'v1'
+                }
+            }]
+        }
+        client = create_test_client(keyword_extractor=keyword_extractor)
+        response = client.post('/v1/batch-extract-keywords', json=request_json)
+        response.raise_for_status()
+        actual_response_json = response.json()
+        LOGGER.debug('actual_response_json: %r', actual_response_json)
+        assert actual_response_json == expected_response_json
