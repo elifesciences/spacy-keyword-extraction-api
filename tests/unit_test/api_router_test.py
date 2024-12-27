@@ -22,7 +22,7 @@ def create_test_client(keyword_extractor: KeywordExtractor):
 
 
 class TestExtractKeyword:
-    def test_should_return_keywords_in_lower_case(
+    def test_should_return_extracted_keywords(
         self,
         keyword_extractor: KeywordExtractor
     ):
