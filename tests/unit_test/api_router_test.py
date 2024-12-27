@@ -3,7 +3,10 @@ from fastapi.testclient import TestClient
 from fastapi import FastAPI
 import pytest
 
-from spacy_keyword_extraction_api.api_router import create_api_router
+from spacy_keyword_extraction_api.api_router import (
+    create_api_router,
+    get_keyword_response_dict_list
+)
 from spacy_keyword_extraction_api.api_router_typing import (
     BatchExtractKeywordsRequestTypedDict,
     BatchKeywordsResponseTypedDict
@@ -27,6 +30,18 @@ def create_test_client(keyword_extractor: KeywordExtractor):
     app.include_router(create_api_router(keyword_extractor=keyword_extractor))
     client = TestClient(app)
     return client
+
+
+class TestGetKeywordResponseDictList:
+    def test_should_return_dict_list(self):
+        assert (
+            get_keyword_response_dict_list(['keyword_1', 'keyword_2'])
+            == [{
+                'keyword': 'keyword_1'
+            }, {
+                'keyword': 'keyword_2'
+            }]
+        )
 
 
 class TestExtractKeyword:
@@ -56,12 +71,9 @@ class TestExtractKeyword:
             'data': [{
                 'type': 'extract-keyword-result',
                 'attributes': {
-                    'keywords': [
-                        {
-                            'keyword': keyword
-                        }
-                        for keyword in keyword_extractor.get_extracted_keywords_for_text(TEXT_1)
-                    ]
+                    'keywords': get_keyword_response_dict_list(
+                        keyword_extractor.get_extracted_keywords_for_text(TEXT_1)
+                    )
                 }
             }]
         }
@@ -90,12 +102,9 @@ class TestExtractKeyword:
                 'type': 'extract-keyword-result',
                 'id': 'doc-1',
                 'attributes': {
-                    'keywords': [
-                        {
-                            'keyword': keyword
-                        }
-                        for keyword in keyword_extractor.get_extracted_keywords_for_text(TEXT_1)
-                    ]
+                    'keywords': get_keyword_response_dict_list(
+                        keyword_extractor.get_extracted_keywords_for_text(TEXT_1)
+                    )
                 }
             }]
         }
