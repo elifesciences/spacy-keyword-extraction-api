@@ -1,3 +1,4 @@
+from collections import Counter
 import logging
 from typing import Optional, Sequence
 from typing_extensions import TypedDict
@@ -75,7 +76,7 @@ def get_keyword_response_dict_list(
         {
             'keyword': keyword
         }
-        for keyword in keywords
+        for keyword in Counter(keywords)
     ]
 
 

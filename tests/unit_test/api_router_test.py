@@ -43,6 +43,16 @@ class TestGetKeywordResponseDictList:
             }]
         )
 
+    def test_should_remove_duplicates(self):
+        assert (
+            get_keyword_response_dict_list(['keyword_1', 'keyword_2', 'keyword_1'])
+            == [{
+                'keyword': 'keyword_1'
+            }, {
+                'keyword': 'keyword_2'
+            }]
+        )
+
 
 class TestExtractKeyword:
     def test_should_return_extracted_keywords(
