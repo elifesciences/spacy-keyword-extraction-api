@@ -29,5 +29,5 @@ class TestExtractKeyword:
         client = create_test_client(keyword_extractor=keyword_extractor)
         response = client.get('/v1/extract-keywords', params={'text': TEXT_1})
         assert response.json() == {
-            'keywords': list(keyword_extractor.iter_extract_keywords(text_list=[TEXT_1]))[0]
+            'keywords': keyword_extractor.get_extracted_keywords_for_text(TEXT_1)
         }

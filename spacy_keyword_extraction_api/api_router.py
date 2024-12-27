@@ -20,7 +20,7 @@ def create_api_router(keyword_extractor: KeywordExtractor) -> APIRouter:
     @router.get("/v1/extract-keywords")
     def extract_keywords(text: str) -> KeywordsResponseTypedDict:
         return {
-            'keywords': list(keyword_extractor.iter_extract_keywords(text_list=[text]))[0]
+            'keywords': keyword_extractor.get_extracted_keywords_for_text(text)
         }
 
     return router
