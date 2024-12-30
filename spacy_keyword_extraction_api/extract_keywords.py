@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 import re
-from typing import Iterable, List
+from typing import Iterable, List, Sequence
 
 from spacy.language import Language
 
@@ -14,6 +14,9 @@ class KeywordExtractor(ABC):
     @abstractmethod
     def iter_extract_keywords(self, text_list: Iterable[str]) -> Iterable[List[str]]:
         pass
+
+    def get_extracted_keywords_for_text(self, text: str) -> Sequence[str]:
+        return list(self.iter_extract_keywords(text_list=[text]))[0]
 
 
 def simple_regex_keyword_extraction(

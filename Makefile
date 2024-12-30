@@ -55,7 +55,7 @@ dev-watch:
 	$(PYTHON) -m pytest_watcher \
 		--runner=$(VENV)/bin/python \
 		. \
-		-m pytest $(PYTEST_WATCH_MODULES)
+		-m pytest -vv $(PYTEST_WATCH_MODULES)
 
 
 dev-start:

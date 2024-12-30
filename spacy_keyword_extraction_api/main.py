@@ -16,12 +16,16 @@ LOGGER = logging.getLogger(__name__)
 def create_app():
     app = FastAPI()
 
+    spacy_language_model_name = DEFAULT_SPACY_LANGUAGE_MODEL_NAME
+
     app.include_router(create_api_router(
         keyword_extractor=SpacyKeywordExtractor(
-            language=spacy.load(
-                DEFAULT_SPACY_LANGUAGE_MODEL_NAME
-            )
-        )
+            language=spacy.load(spacy_language_model_name)
+        ),
+        meta={
+            'spacy_version': spacy.__version__,
+            'spacy_language_model_name': spacy_language_model_name
+        }
     ))
 
     app.mount('/', StaticFiles(directory='static', html=True), name='static')
