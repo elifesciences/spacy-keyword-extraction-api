@@ -17,6 +17,13 @@ class EnvVars:
     SPACY_LANGUAGE_EN_FULL = "SPACY_LANGUAGE_EN_FULL"
 
 
+@pytest.fixture(scope='session', autouse=True)
+def setup_logging():
+    logging.basicConfig(level='INFO')
+    for name in ['tests', 'spacy_keyword_extraction_api']:
+        logging.getLogger(name).setLevel('DEBUG')
+
+
 def _load_spacy_model(language_model_name: str) -> Language:
     LOGGER.debug("loading spacy model: %s", language_model_name)
     return spacy.load(language_model_name)
