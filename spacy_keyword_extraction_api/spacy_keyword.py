@@ -286,6 +286,9 @@ class SpacyExclusion:
         self.min_word_length = min_word_length
 
     def should_exclude(self, span: Span) -> bool:
+        LOGGER.debug('should_exclude: span: %r', span)
+        if not span:
+            return True
         last_token = span[-1]
         LOGGER.debug(
             'should_exclude: %s (pos: %s, ent_type: %s)',
@@ -310,6 +313,7 @@ class SpacyKeywordList:
     def __init__(self, language: Language, keyword_spans: List[Span]):
         self.language = language
         self.keyword_spans = keyword_spans
+        LOGGER.debug('keyword_spans: %r', keyword_spans)
 
     @property
     def text_list(self) -> List[str]:
