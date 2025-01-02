@@ -3,8 +3,9 @@ import logging
 from typing import Iterable, List, Optional, Set
 
 import spacy
-from spacy.language import Language
+from spacy.language import Language, Tokenizer
 from spacy.tokens import Doc, Span, Token
+from spacy.util import compile_infix_regex
 
 # spaCy's numeric ids (e.g. for pos rather than pos_)
 from spacy.symbols import (  # pylint: disable=no-name-in-module
@@ -433,8 +434,23 @@ class SpacyKeywordDocumentParser:
         )
 
 
+def create_custom_tokenizer(nlp: Language) -> Tokenizer:
+    # Modify infix patterns to preserve hyphenated compounds
+    custom_infixes = [x for x in nlp.Defaults.infixes if '-' not in x]
+    infix_re = compile_infix_regex(custom_infixes)
+    return Tokenizer(
+        nlp.vocab,
+        rules=nlp.tokenizer.rules,
+        prefix_search=nlp.tokenizer.prefix_search,
+        suffix_search=nlp.tokenizer.suffix_search,
+        infix_finditer=infix_re.finditer
+    )
+
+
 def load_spacy_model(
     language_model_name: str
 ) -> Language:
     LOGGER.debug("loading spacy model: %s", language_model_name)
-    return spacy.load(language_model_name)
+    nlp = spacy.load(language_model_name)
+    nlp.tokenizer = create_custom_tokenizer(nlp)
+    return nlp
