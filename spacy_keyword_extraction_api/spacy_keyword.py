@@ -2,8 +2,10 @@ import re
 import logging
 from typing import Iterable, List, Optional, Set
 
-from spacy.language import Language
+import spacy
+from spacy.language import Language, Tokenizer
 from spacy.tokens import Doc, Span, Token
+from spacy.util import compile_infix_regex
 
 # spaCy's numeric ids (e.g. for pos rather than pos_)
 from spacy.symbols import (  # pylint: disable=no-name-in-module
@@ -286,6 +288,9 @@ class SpacyExclusion:
         self.min_word_length = min_word_length
 
     def should_exclude(self, span: Span) -> bool:
+        LOGGER.debug('should_exclude: span: %r', span)
+        if not span:
+            return True
         last_token = span[-1]
         LOGGER.debug(
             'should_exclude: %s (pos: %s, ent_type: %s)',
@@ -310,6 +315,7 @@ class SpacyKeywordList:
     def __init__(self, language: Language, keyword_spans: List[Span]):
         self.language = language
         self.keyword_spans = keyword_spans
+        LOGGER.debug('keyword_spans: %r', keyword_spans)
 
     @property
     def text_list(self) -> List[str]:
@@ -426,3 +432,25 @@ class SpacyKeywordDocumentParser:
                 self.normalize_text_list(text_list)
             )
         )
+
+
+def create_custom_tokenizer(nlp: Language) -> Tokenizer:
+    # Modify infix patterns to preserve hyphenated compounds
+    custom_infixes = [x for x in nlp.Defaults.infixes if '-' not in x]
+    infix_re = compile_infix_regex(custom_infixes)
+    return Tokenizer(
+        nlp.vocab,
+        rules=nlp.tokenizer.rules,
+        prefix_search=nlp.tokenizer.prefix_search,
+        suffix_search=nlp.tokenizer.suffix_search,
+        infix_finditer=infix_re.finditer
+    )
+
+
+def load_spacy_model(
+    language_model_name: str
+) -> Language:
+    LOGGER.debug("loading spacy model: %s", language_model_name)
+    nlp = spacy.load(language_model_name)
+    nlp.tokenizer = create_custom_tokenizer(nlp)
+    return nlp

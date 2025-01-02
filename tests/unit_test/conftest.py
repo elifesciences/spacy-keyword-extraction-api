@@ -4,10 +4,12 @@ from typing import Dict
 
 import pytest
 
-import spacy
 from spacy.language import Language
 
-from spacy_keyword_extraction_api.spacy_keyword import DEFAULT_SPACY_LANGUAGE_MODEL_NAME
+from spacy_keyword_extraction_api.spacy_keyword import (
+    DEFAULT_SPACY_LANGUAGE_MODEL_NAME,
+    load_spacy_model
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -26,7 +28,7 @@ def setup_logging():
 
 def _load_spacy_model(language_model_name: str) -> Language:
     LOGGER.debug("loading spacy model: %s", language_model_name)
-    return spacy.load(language_model_name)
+    return load_spacy_model(language_model_name)
 
 
 def _get_or_load_spacy_model(
