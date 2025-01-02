@@ -2,6 +2,7 @@ import re
 import logging
 from typing import Iterable, List, Optional, Set
 
+import spacy
 from spacy.language import Language
 from spacy.tokens import Doc, Span, Token
 
@@ -430,3 +431,10 @@ class SpacyKeywordDocumentParser:
                 self.normalize_text_list(text_list)
             )
         )
+
+
+def load_spacy_model(
+    language_model_name: str
+) -> Language:
+    LOGGER.debug("loading spacy model: %s", language_model_name)
+    return spacy.load(language_model_name)
