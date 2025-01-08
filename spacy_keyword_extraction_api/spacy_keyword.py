@@ -273,6 +273,7 @@ DEFAULT_EXCLUDED_ENTITY_TYPES = {CARDINAL, DATE, PERSON, GPE, PERCENT}
 class SpacyExclusion:
     def __init__(
         self,
+        *,
         exclusion_list: Optional[Set[str]] = None,
         exclude_entity_types: Optional[Set[int]] = None,
         exclude_pronoun: bool = True,
