@@ -387,12 +387,13 @@ class SpacyKeywordDocument:
         )
 
     def get_keyword_str_list(  # pylint: disable=redefined-outer-name
-            self,
-            strip_stop_words_and_punct: bool = True,
-            individual_tokens: bool = True,
-            shorter_keywords: bool = True,
-            normalize_text: bool = True,
-            exclude: Optional[SpacyExclusion] = None) -> List[str]:
+        self,
+        strip_stop_words_and_punct: bool = True,
+        individual_tokens: bool = True,
+        shorter_keywords: bool = True,
+        normalize_text: bool = True,
+        exclude: Optional[SpacyExclusion] = None
+    ) -> List[str]:
 
         if exclude is None:
             exclude = SpacyExclusion()
