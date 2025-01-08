@@ -272,12 +272,14 @@ DEFAULT_EXCLUDED_ENTITY_TYPES = {CARDINAL, DATE, PERSON, GPE, PERCENT}
 
 class SpacyExclusion:
     def __init__(
-            self,
-            exclusion_list: Optional[Set[str]] = None,
-            exclude_entity_types: Optional[Set[int]] = None,
-            exclude_pronoun: bool = True,
-            exclude_stop_words: bool = True,
-            min_word_length: int = 2):
+        self,
+        exclusion_list: Optional[Set[str]] = None,
+        *,
+        exclude_entity_types: Optional[Set[int]] = None,
+        exclude_pronoun: bool = True,
+        exclude_stop_words: bool = True,
+        min_word_length: int = 2
+    ):
         self.exclusion_list = exclusion_list or set()
         self.exclude_entity_types = (
             exclude_entity_types if exclude_entity_types is not None
@@ -385,12 +387,14 @@ class SpacyKeywordDocument:
         )
 
     def get_keyword_str_list(  # pylint: disable=redefined-outer-name
-            self,
-            strip_stop_words_and_punct: bool = True,
-            individual_tokens: bool = True,
-            shorter_keywords: bool = True,
-            normalize_text: bool = True,
-            exclude: Optional[SpacyExclusion] = None) -> List[str]:
+        self,
+        *,
+        strip_stop_words_and_punct: bool = True,
+        individual_tokens: bool = True,
+        shorter_keywords: bool = True,
+        normalize_text: bool = True,
+        exclude: Optional[SpacyExclusion] = None
+    ) -> List[str]:
 
         if exclude is None:
             exclude = SpacyExclusion()
