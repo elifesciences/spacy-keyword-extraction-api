@@ -1,4 +1,5 @@
 import logging
+import platform
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -27,7 +28,8 @@ def create_app():
         ),
         meta={
             'spacy_version': spacy.__version__,
-            'spacy_language_model_name': spacy_language_model_name
+            'spacy_language_model_name': spacy_language_model_name,
+            'python_version': platform.python_version()
         }
     ))
 
