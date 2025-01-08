@@ -1,6 +1,7 @@
 import logging
 import os
-from typing import Dict
+from typing import Dict, Iterable
+from unittest.mock import patch
 
 import pytest
 
@@ -24,6 +25,13 @@ def setup_logging():
     logging.basicConfig(level='INFO')
     for name in ['tests', 'spacy_keyword_extraction_api']:
         logging.getLogger(name).setLevel('DEBUG')
+
+
+@pytest.fixture()
+def mock_env() -> Iterable[dict]:
+    env_dict: dict = {}
+    with patch('os.environ', env_dict):
+        yield env_dict
 
 
 def _load_spacy_model(language_model_name: str) -> Language:

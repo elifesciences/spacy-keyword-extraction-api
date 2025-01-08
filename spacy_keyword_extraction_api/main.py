@@ -1,5 +1,7 @@
 import logging
+import os
 import platform
+from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -18,14 +20,26 @@ from spacy_keyword_extraction_api.spacy_keyword import (
 LOGGER = logging.getLogger(__name__)
 
 
+class EnvironmentVariables:
+    VCS_REF = 'VCS_REF'
+
+
+def get_vcs_ref() -> Optional[str]:
+    return os.getenv(EnvironmentVariables.VCS_REF)
+
+
 def get_app_meta(
     spacy_language_model_name: str
 ) -> KeywordsResponseMetaTypedDict:
-    return {
+    meta: KeywordsResponseMetaTypedDict = {
         'spacy_version': spacy.__version__,
         'spacy_language_model_name': spacy_language_model_name,
         'python_version': platform.python_version()
     }
+    vcf_ref = get_vcs_ref()
+    if vcf_ref:
+        meta['revision'] = vcf_ref
+    return meta
 
 
 def create_app():
