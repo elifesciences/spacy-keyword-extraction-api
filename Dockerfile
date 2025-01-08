@@ -38,3 +38,7 @@ COPY tests ./tests
 COPY .flake8 .pylintrc pyproject.toml ./
 
 CMD ["python3", "-m", "uvicorn", "spacy_keyword_extraction_api.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--log-config=config/logging.yaml"]
+
+ARG VCS_REF
+ENV VCS_REF="${VCS_REF}"
+LABEL org.opencontainers.image.revision="${VCS_REF}"
