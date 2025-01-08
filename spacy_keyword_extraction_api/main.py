@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 import spacy
 
 from spacy_keyword_extraction_api.api_router import create_api_router
+from spacy_keyword_extraction_api.api_router_typing import KeywordsResponseMetaTypedDict
 from spacy_keyword_extraction_api.extract_keywords import SpacyKeywordExtractor
 from spacy_keyword_extraction_api.spacy_keyword import (
     DEFAULT_SPACY_LANGUAGE_MODEL_NAME,
@@ -15,6 +16,16 @@ from spacy_keyword_extraction_api.spacy_keyword import (
 
 
 LOGGER = logging.getLogger(__name__)
+
+
+def get_app_meta(
+    spacy_language_model_name: str
+) -> KeywordsResponseMetaTypedDict:
+    return {
+        'spacy_version': spacy.__version__,
+        'spacy_language_model_name': spacy_language_model_name,
+        'python_version': platform.python_version()
+    }
 
 
 def create_app():
@@ -26,11 +37,9 @@ def create_app():
         keyword_extractor=SpacyKeywordExtractor(
             language=load_spacy_model(spacy_language_model_name)
         ),
-        meta={
-            'spacy_version': spacy.__version__,
-            'spacy_language_model_name': spacy_language_model_name,
-            'python_version': platform.python_version()
-        }
+        meta=get_app_meta(
+            spacy_language_model_name=spacy_language_model_name
+        )
     ))
 
     app.mount('/', StaticFiles(directory='static', html=True), name='static')
