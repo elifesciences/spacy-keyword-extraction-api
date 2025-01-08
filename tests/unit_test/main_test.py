@@ -1,6 +1,14 @@
 from fastapi.testclient import TestClient
 
-from spacy_keyword_extraction_api.main import create_app
+from spacy_keyword_extraction_api.main import create_app, get_app_meta
+
+
+class TestGetAppMeta:
+    def test_should_return_language_model(self):
+        meta = get_app_meta(
+            spacy_language_model_name='model_1'
+        )
+        assert meta['spacy_language_model_name'] == 'model_1'
 
 
 def test_read_main():
