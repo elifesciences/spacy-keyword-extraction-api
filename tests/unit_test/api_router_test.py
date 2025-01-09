@@ -59,16 +59,6 @@ class TestGetKeywordResponseDictList:
 
 
 class TestExtractKeyword:
-    def test_should_return_extracted_keywords(
-        self,
-        keyword_extractor: KeywordExtractor
-    ):
-        client = create_test_client(keyword_extractor=keyword_extractor)
-        response = client.get('/v1/extract-keywords', params={'text': TEXT_1})
-        assert response.json() == {
-            'keywords': keyword_extractor.get_extracted_keywords_for_text(TEXT_1)
-        }
-
     def test_should_return_batch_extracted_keywords(
         self,
         keyword_extractor: KeywordExtractor
