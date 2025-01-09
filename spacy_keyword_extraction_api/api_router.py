@@ -106,12 +106,6 @@ def create_api_router(
 ) -> APIRouter:
     router = APIRouter()
 
-    @router.get('/v1/extract-keywords')
-    def extract_keywords(text: str) -> KeywordsResponseTypedDict:
-        return {
-            'keywords': keyword_extractor.get_extracted_keywords_for_text(text)
-        }
-
     @router.post(
         '/v1/batch-extract-keywords',
         responses=EXAMPLE_BATCH_KEYWORDS_RESPONSES_BY_STATUS_CODE_DICT
