@@ -36,3 +36,32 @@ make dev-start
 The server will be available on port 8000.
 
 You can access the API Docs via http://localhost:8000/docs
+
+
+## Development Using Docker
+
+### Pre-requisites (Docker)
+
+* Docker
+
+### Run Tests (Docker)
+
+```bash
+make build-dev test
+```
+
+### Start Server (Docker)
+
+```bash
+make build start logs
+```
+
+The server will be available on port 8000.
+
+You can access the API Docs via http://localhost:8000/docs
+
+### Stop Server (Docker)
+
+```bash
+make stop
+```
